@@ -87,7 +87,7 @@ final class ProjectUpdater extends AbstractAction
             $contactFromDB->update(
                 $contact->getFirstName(),
                 $contact->getLastName(),
-                $contact->getPhone()
+                $contact->getPhone(),
             );
         }
 

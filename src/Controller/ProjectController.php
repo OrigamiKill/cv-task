@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\CRUD\Creators\ProjectCreator;
 use App\CRUD\Readers\ProjectReader;
+use App\CRUD\Readers\ProjectsReader;
 use App\CRUD\Removers\ProjectRemover;
 use App\CRUD\Updaters\ProjectUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProjectController extends AbstractController
 {
+    /**
+     * @Route("/projects", methods={"GET"}, format="json", name="app_api_get_projects")
+     */
+    public function getProjects(ProjectsReader $projectsReader): JsonResponse
+    {
+        return $projectsReader->do();
+    }
+
     /**
      * @Route("/projects/{id}", methods={"GET"}, format="json", requirements={"id"="\d+"}, name="app_api_get_project")
      */
