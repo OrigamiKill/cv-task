@@ -1,4 +1,7 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
     providers:
         users_in_memory: { memory: null }
     firewalls:
@@ -9,4 +12,8 @@ security:
             anonymous: lazy
             stateless: true
             logout: ~
+            guard:
+                authenticators:
+                    - App\Security\ApiKeyAuthenticator
     access_control:
+        - { path: '^/api', roles: ROLE_API }
