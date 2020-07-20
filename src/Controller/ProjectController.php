@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\CRUD\Creators\ProjectCreator;
+use App\CRUD\Removers\ProjectRemover;
 use App\CRUD\Updaters\ProjectUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,5 +33,19 @@ class ProjectController extends AbstractController
     public function updateProject(ProjectUpdater $projectUpdater): JsonResponse
     {
         return $projectUpdater->do();
+    }
+
+    /**
+     * @Route(
+     *     "/projects/{id}",
+     *     methods={"DELETE"},
+     *     format="json",
+     *     requirements={"id"="\d+"},
+     *     name="app_api_delete_project"
+     * )
+     */
+    public function deleteProject(ProjectRemover $projectRemover): JsonResponse
+    {
+        return $projectRemover->do();
     }
 }
