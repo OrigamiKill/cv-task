@@ -1,5 +1,6 @@
 parameters:
-
+    allowed_domains:
+        - 'example.com'
 services:
     _defaults:
         autowire: true
@@ -12,3 +13,8 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Validator\Constraints\ContainsAllowedDomainsValidator:
+        class: 'App\Validator\Constraints\ContainsAllowedDomainsValidator'
+        arguments:
+            - '%allowed_domains%'
