@@ -1,0 +1,43 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - ${NGINX_HTTP_PORT}:80
+    volumes:
+      - ./:/var/www:rw
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/cv-task.conf:/etc/nginx/sites-available/cv-task.conf
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - cv-task
+
+  php:
+    build: ./docker/php
+    environment:
+      XDEBUG_IDE_KEY: PHPSTORM
+      XDEBUG_ENABLED: 1
+      XDEBUG_PORT: 9000
+      XDEBUG_REMOTE_HOST: ${REMOTE_HOST}
+    volumes:
+      - ./:/var/www:rw
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    networks:
+      - cv-task
+
+  mysql:
+    image: mysql
+    ports:
+      - ${MYSQL_PORT}:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DB_NAME}
+      - MYSQL_USER=${MYSQL_DB_USER}
+#      - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
+    networks:
+      - cv-task
+
+networks:
+  cv-task: {}
